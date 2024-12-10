@@ -1,10 +1,24 @@
-﻿using System;
+﻿using online_service_app_auth.models;
+using System;
 using System.Collections.Generic;
 
 namespace online_service_app_auth.db_layer;
 
-public partial class Organization
+public partial class Organization : IUser 
 {
+    private Organization() { }
+    private Organization(int id, string name, int typeId, int? shereId, string? phone, string? address, string? webAddress, string email, string password)
+    {
+        Id = id;
+        Name = name;
+        TypeId = typeId;
+        SphereId = shereId;
+        Phone = phone;
+        Address = address;
+        WebAddress = webAddress;
+        Email = email;
+        Password = password;
+    }
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
@@ -32,4 +46,10 @@ public partial class Organization
     public virtual SphereOfOrganization? Sphere { get; set; }
 
     public virtual TypeOfOrganization Type { get; set; } = null!;
+
+    // метод создания организации
+    public static Organization Create(int id, string name, int typeId, int? shereId, string? phone, string? address, string? webAddress, string email, string password)
+    {
+        return new Organization(id, name, typeId, shereId, phone, address, webAddress, email, password);
+    }
 }

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using online_service_app_auth.models;
+using System;
 using System.Collections.Generic;
 
 namespace online_service_app_auth.db_layer;
 
-public partial class Client
+public partial class Client : IUser
 { 
     private Client(int id, string name, string surname, string? patronymic, string? phone, string email, string password)
     {

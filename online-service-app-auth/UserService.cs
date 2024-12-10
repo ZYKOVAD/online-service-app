@@ -8,25 +8,64 @@ namespace online_service_app_auth
     {
         private readonly PasswordHasher hasher;
         private readonly OnlineServiceDbContext db;
-        private static int countId;
-        public UserService(PasswordHasher _hasher, OnlineServiceDbContext _db)
+        private readonly jwtProvider jwt;
+        private static int countClientId;
+        private static int countMasterId;
+        private static int countOrganizationId;
+        public UserService(PasswordHasher _hasher, OnlineServiceDbContext _db, jwtProvider _jwt)
         {
             hasher = _hasher;
             db = _db;
-            countId = db.Clients.Max(c => c.Id);
+            jwt = _jwt;
+            countClientId = db.Clients.Max(c => c.Id);
+            countMasterId = db.Masters.Max(c => c.Id);
+            countOrganizationId = db.Organizations.Max(c => c.Id);
         }
 
         // метод регистрации клиента
         public Client RegisterClient(ClientRequestModel cl)
         {
             var hashedPassword = hasher.Generate(cl.Password);
-            countId += 1;
-            Client client = Client.Create(countId, cl.Name, cl.Surname, cl.Patronymic, cl.Phone, cl.Email, hashedPassword);
+            countClientId += 1;
+            Client client = Client.Create(countClientId, cl.Name, cl.Surname, cl.Patronymic, cl.Phone, cl.Email, hashedPassword);
             db.Clients.Add(client);
             db.SaveChanges();
             return client;   
         }
 
-        // метод login клиента
+        // метод регистрации мастера
+        public Master RegisterMaster(MasterRequestModel m)
+        {
+            var hashedPassword = hasher.Generate(m.Password);
+            countMasterId += 1;
+            Master master = Master.Create(countMasterId, m.Name, m.Surname, m.Patronymic, m.Phone, m.Email, hashedPassword, m.SpecializationId, m.OrganizationId);
+            db.Masters.Add(master);
+            db.SaveChanges();
+            return master;
+        }
+
+        // метод регистрации организации
+        public Organization RegisterOrganization(OrganizationRequestModel org)
+        {
+            var hashedPassword = hasher.Generate(org.Password);
+            countOrganizationId += 1;
+            Organization organization = Organization.Create(countOrganizationId, org.Name, org.TypeId, org.SphereId, org.Phone, org.Address, org.WebAddress, org.Email, hashedPassword);
+            db.Organizations.Add(organization);
+            db.SaveChanges();
+            return organization;
+        }
+
+        // метод login 
+        public string Login(string password, IUser user)
+        {
+            var result = hasher.Verify(password, user.Password);
+            if (result == false)
+            {
+                throw new Exception("Ошибка входа. Проверьте пароль.");
+            }
+            var token = jwt.GenerateToken(user);
+
+            return token;
+        }
     }
 }
