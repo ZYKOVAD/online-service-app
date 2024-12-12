@@ -1,0 +1,6 @@
+@online_service_app_business_functions_HostAddress = http://localhost:5041
+
+GET {{online_service_app_business_functions_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
