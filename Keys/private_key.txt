@@ -1,18 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using online_service_app_auth.db_layer;
-using online_service_app_auth.models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace online_service_app_auth
-{
-    public class jwtProvider
-    {
-        public string GenerateToken(IUser user)
-        {
-            var privateKey = @"-----BEGIN RSA PRIVATE KEY-----
+-----BEGIN RSA PRIVATE KEY-----
 MIIEnwIBAAKCAQBHpw5FPR+2hizdJ+Xu1es7h1inFu7L9FmHoQF81XPYDJIIKnl4
 DPpZPVm6yNs+G5qNVDEquXKsqcguihPg45OO5dONdra5uxTlXfbz8+u7nNiYvLYG
 mrEOEIJFyHRv8hIzxhDzDbkheFTGTSf7gxmwaElDK394WA46QlvdRPGoo8Ohc4ss
@@ -38,26 +24,4 @@ bsgURrbZnYHMaW0JzrvUnz4uA/WVZBA3QV2BDUuYoKGuDe/z9s5V0wEKomws/OCR
 AoGACQXFZjZF/ES/rT5wFEyVgzyYfaD8xw+6u1wxVLnunqR4hNoZSHCA4l5ERFhg
 ojufMnr3EMoY0jwmpOjslCbQQeLKkYSLdsWWX9gofbic3E5m1dsKqbAzYu1P4XxD
 T9Ons4owZUdFx0sb8qJtC8xgV6sshfIhuoVIK5bgTaF2gkk=
------END RSA PRIVATE KEY-----";
-
-            using var rsa = RSA.Create();
-            rsa.ImportFromPem(privateKey);
-
-            Claim[] claims =
-                [
-                    new Claim("Id", user.Id.ToString()),
-                    new Claim("typeUser", user.GetType().ToString())
-                ];
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256)
-            );
-
-            var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return tokenValue;
-        }
-    }
-}
+-----END RSA PRIVATE KEY-----

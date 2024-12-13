@@ -32,7 +32,7 @@ namespace online_service_app_business_functions.Controllers
         }
 
         //получение информации об организации по id
-        [Authorize]
+        [Authorize(Policy = "OnlyForClients")]
         [HttpGet]
         public IResult GetOrganization(int id)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using online_service_app_business_functions.db_layer;
 
 namespace online_service_app_business_functions.Controllers
@@ -14,6 +15,7 @@ namespace online_service_app_business_functions.Controllers
         }
 
         //получение списка предыдущих записей клиента
+       // [Authorize(Policy = "Default")]
         [HttpGet]
         public IResult GetBookingsByClient(int client_id)
         {
@@ -26,7 +28,6 @@ namespace online_service_app_business_functions.Controllers
             {
                 return Results.Json(new { message = ex.Message });
             }
-
         }
 
         //получение информации о записи по id

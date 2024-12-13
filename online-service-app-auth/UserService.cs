@@ -1,6 +1,7 @@
 ﻿using online_service_app_auth.db_layer;
 using online_service_app_auth.models;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace online_service_app_auth
 {
@@ -63,6 +64,7 @@ namespace online_service_app_auth
             {
                 throw new Exception("Ошибка входа. Проверьте пароль.");
             }
+            
             var token = jwt.GenerateToken(user);
 
             return token;
