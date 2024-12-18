@@ -1,10 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace online_service_app_business_functions.db_layer;
+﻿namespace online_service_app_business_functions.db_layer;
 
 public partial class Booking
 {
+    public Booking() { }
+    public Booking(int id, int orgId, int clinetId, DateTime dateTime, int masterId, int serviceId)
+    {
+        Id = id;
+        OrganizationId = orgId;
+        ClientId = clinetId;
+        DateTime = dateTime;
+        MasterId = masterId;
+        ServiceId = serviceId;
+        StatusId = 1;
+    }
     public int Id { get; set; }
 
     public int OrganizationId { get; set; }

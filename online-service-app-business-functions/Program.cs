@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using online_service_app_business_functions.db_layer;
+using online_service_app_business_functions.RabbitMQ;
+using online_service_app_business_functions.Repositories;
+using online_service_app_business_functions.Servises;
 using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Online-service-app", Version = "v1" });
-
-    c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+    c.AddSecurityDefinition("JwtBearerDefaults.AuthenticationScheme", new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
@@ -22,45 +23,47 @@ builder.Services.AddSwaggerGen(c =>
         Description = "JWT Authorization header using the Bearer scheme."
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "bearerAuth"
-                }
-            },
-            new string[] {}
-        }
-    });
+
+    //c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    //{
+    //    {
+    //        new OpenApiSecurityScheme
+    //        {
+    //            Reference = new OpenApiReference
+    //            {
+    //                Type = ReferenceType.SecurityScheme,
+    //                Id = "bearerAuth"
+    //            }
+    //        },
+    //        new string[] {}
+    //    }
+    //});
 });
 
 builder.Services.AddScoped<OnlineServiceDbContext>();
-builder.Services.AddAuthentication(options =>
-{
-    // устанавливаем дефолтную схему как JWT
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+builder.Services.AddScoped<BookingService>();
+builder.Services.AddScoped<BookingRepository>();
+builder.Services.AddScoped<OrganizationService>();
+builder.Services.AddScoped<OrganizationRepository>();
+builder.Services.AddScoped<RabbitMqService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
     var publicKey = @"-----BEGIN PUBLIC KEY-----
-MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBHpw5FPR+2hizdJ+Xu1es7
-h1inFu7L9FmHoQF81XPYDJIIKnl4DPpZPVm6yNs+G5qNVDEquXKsqcguihPg45OO
-5dONdra5uxTlXfbz8+u7nNiYvLYGmrEOEIJFyHRv8hIzxhDzDbkheFTGTSf7gxmw
-aElDK394WA46QlvdRPGoo8Ohc4ssCFPbNXqhN9G6daAFex6eyoEkZEJrUsJckDMQ
-i8gCItKJdyETcOCSVUF5nU2jB2JsHBcQ917G6ZFxl/DqGvpqzTkjFsWbcPJ7VXQ/
-YTOhWNu9arXAWENz1j5IQyby0h9UFrZJ/tXs+t1jRdRPH2ocboJz1JinXbRuuPbV
-AgMBAAE=
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm+6A0cvML3dDEDNvWu6H
+nmSHu5TVX+mdLhLkL3juu1RLjsFGefrNvhmVEqwhp2m2oDUYG2y0RoFsMPuEfguU
+fqPq/Tgiu7cHcRQSXEhBV+WufNgFMbeUf5K90MHjnGygsbUuZoxLH8dQqOft+ZYm
+ynhk0rKbumRONlC9G9qTRes0bG4TXRT1H/+QBeYWK71OzSM4pKwr9Z+1FTc7ZIYs
+lExWVy0w5tZdN4v2sUWHoQhK9DgZGdHgnxLYsdIfNoXi6TMVqLyGfh0B5hDIfX0h
+PZPfMesVGuOwYXUDFJakl3sjfH9COEUiTALA8YpAeh+HWqkdTCTea4mFnkNaFneY
+iQIDAQAB
 -----END PUBLIC KEY-----";
 
     using var rsa = RSA.Create();
     rsa.ImportFromPem(publicKey);
 
-    // устанавливаем параметры токена
+    // устанавливаем параметры для валидации токена
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,
@@ -69,12 +72,12 @@ AgMBAAE=
         ValidateIssuerSigningKey = true,
         // указываем ключ для проверки подписи
         IssuerSigningKey = new RsaSecurityKey(rsa),
-        CryptoProviderFactory = new CryptoProviderFactory
-        {
-            // отключаем кеширование ключа. Объект RSA — Disposable,
-            // и если его закешировать, возможны ObjectDisposedException
-            CacheSignatureProviders = false
-        }
+        //CryptoProviderFactory = new CryptoProviderFactory
+        //{
+        //    // отключаем кеширование ключа. Объект RSA — Disposable,
+        //    // и если его закешировать, возможны ObjectDisposedException
+        //    CacheSignatureProviders = false
+        //}
     };
 });
 

@@ -9,12 +9,10 @@ namespace online_service_app_auth.Controllers
     public class AuthController : ControllerBase
     {
         private readonly OnlineServiceDbContext _db;
-        private readonly PasswordHasher _hasher;
         private readonly UserService _userService;
         public AuthController(OnlineServiceDbContext db, PasswordHasher hasher, UserService userService)
         {
             _db = db;
-            _hasher = hasher;
             _userService = userService;
         }
 
