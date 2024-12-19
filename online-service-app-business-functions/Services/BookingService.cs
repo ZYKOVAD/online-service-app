@@ -1,10 +1,10 @@
-﻿using online_service_app_business_functions.db_layer;
+﻿using online_service_app_business_functions.DbLayer;
 using online_service_app_business_functions.Models;
 using online_service_app_business_functions.Repositories;
 using System.Collections.Generic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace online_service_app_business_functions.Servises
+namespace online_service_app_business_functions.Services
 {
     public class BookingService
     {

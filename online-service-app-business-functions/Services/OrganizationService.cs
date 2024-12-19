@@ -1,8 +1,8 @@
-﻿using online_service_app_business_functions.db_layer;
+﻿using online_service_app_business_functions.DbLayer;
 using online_service_app_business_functions.Models;
 using online_service_app_business_functions.Repositories;
 
-namespace online_service_app_business_functions.Servises
+namespace online_service_app_business_functions.Services
 {
     public class OrganizationService
     {
@@ -17,9 +17,14 @@ namespace online_service_app_business_functions.Servises
             return _organizationRepository.Get(id);
         }
 
-        public List<Organization> GetOrganizationsByClient(int clientId)
+        public List<Organization> GetAll()
         {
-            return _organizationRepository.GetOrganizationsByClient(clientId);
+            return _organizationRepository.GetAll();
+        }
+
+        public List<int> GetOrganizationIdsByClient(int clientId)
+        {
+            return _organizationRepository.GetOrganizationIdsByClient(clientId);
         }
 
         public Organization Update(int id, OrganizationModel model)

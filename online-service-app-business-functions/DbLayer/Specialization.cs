@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace online_service_app_business_functions.db_layer;
+namespace online_service_app_business_functions.DbLayer;
 
 public partial class Specialization
 {

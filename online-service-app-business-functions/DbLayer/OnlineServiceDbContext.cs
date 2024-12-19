@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace online_service_app_business_functions.db_layer;
+namespace online_service_app_business_functions.DbLayer;
 
 public partial class OnlineServiceDbContext : DbContext
 {
@@ -26,6 +26,8 @@ public partial class OnlineServiceDbContext : DbContext
     public virtual DbSet<Organization> Organizations { get; set; }
 
     public virtual DbSet<Service> Services { get; set; }
+
+    //public virtual DbSet<ServiceMaster> ServiceMasters { get; set; }
 
     public virtual DbSet<Specialization> Specializations { get; set; }
 
@@ -213,6 +215,14 @@ public partial class OnlineServiceDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("org_id_fk");
         });
+
+        //modelBuilder.Entity<ServiceMaster>(entity =>
+        //{
+        //    entity.HasKey(e => new {e.ServiceId, e.MasterId}).HasName("master_service_pk");
+        //    entity.ToTable("service_master");
+        //    entity.Property(e => e.ServiceId).ValueGeneratedNever().HasColumnName("service_id");
+        //    entity.Property(e => e.MasterId).ValueGeneratedNever().HasColumnName("master_id");
+        //});
 
         modelBuilder.Entity<Specialization>(entity =>
         {

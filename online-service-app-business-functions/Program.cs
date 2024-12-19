@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using online_service_app_business_functions.db_layer;
+using online_service_app_business_functions.DbLayer;
 using online_service_app_business_functions.RabbitMQ;
 using online_service_app_business_functions.Repositories;
-using online_service_app_business_functions.Servises;
+using online_service_app_business_functions.Services;
 using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,8 +43,14 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<OnlineServiceDbContext>();
 builder.Services.AddScoped<BookingService>();
 builder.Services.AddScoped<BookingRepository>();
+builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<ClientRepository>();
 builder.Services.AddScoped<OrganizationService>();
 builder.Services.AddScoped<OrganizationRepository>();
+builder.Services.AddScoped<MasterService>();
+builder.Services.AddScoped<MasterRepository>();
+builder.Services.AddScoped<WorkdayByDefaultService>();
+builder.Services.AddScoped<WorkdayByDefaultRepository>();
 builder.Services.AddScoped<RabbitMqService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

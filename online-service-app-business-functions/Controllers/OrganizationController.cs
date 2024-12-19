@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using online_service_app_business_functions.db_layer;
+using online_service_app_business_functions.DbLayer;
 using online_service_app_business_functions.Models;
-using online_service_app_business_functions.Servises;
+using online_service_app_business_functions.Services;
 
 namespace online_service_app_business_functions.Controllers
 {
@@ -16,27 +16,27 @@ namespace online_service_app_business_functions.Controllers
             _organizationService = service;
         }
 
-        //получение списка организаций, в которых у клиента до этого была запись
+        // получение списка id организаций, в которых у клиента до этого была запись
         //[Authorize(Policy = "Default")]
-        //[HttpGet]
-        //public IResult GetOrganizationsByClient(int clientId)
-        //{
-        //    try
-        //    {
-        //        List<Organization> organizations = _organizationService.GetOrganizationsByClient(clientId);
-        //        return Results.Json(organizations);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Results.Json(new { message = ex.Message });
-        //    }
+        [HttpGet]
+        public IResult GetOrganizationIdsByClient(int clientId)
+        {
+            try
+            {
+                List<int> organizationIds = _organizationService.GetOrganizationIdsByClient(clientId);
+                return Results.Json(organizationIds);
+            }
+            catch (Exception ex)
+            {
+                return Results.Json(new { message = ex.Message });
+            }
 
-        //}
+        }
 
         //получение информации об организации по id
         //[Authorize(Policy = "OnlyForClients")]
         [HttpGet]
-        public IResult GetOrganization(int id)
+        public IResult Get(int id)
         {
             try
             {
@@ -49,12 +49,26 @@ namespace online_service_app_business_functions.Controllers
             }
         }
 
-        //поиск организации по названию (подстроке)
+        [HttpGet]
+        public IResult GetAll()
+        {
+            try
+            {
+                List<Organization> organizations = _organizationService.GetAll();
+                return Results.Json(organizations);
+            }
+            catch (Exception ex)
+            {
+                return Results.Json(new { message = ex.Message });
+            }
+        }
+
+        //todo поиск организации по названию (подстроке)
 
         //изменение информации об организации
         //[Authorize(Policy = "OnlyForOrganization")]
         [HttpPut]
-        public IResult UpdateOrganization(int orgId, OrganizationModel model)
+        public IResult Update(int orgId, OrganizationModel model)
         {
             try
             {
@@ -69,7 +83,7 @@ namespace online_service_app_business_functions.Controllers
 
         //удаление организации
         [HttpDelete]
-        public IResult DeleteOrganization(int orgId)
+        public IResult Delete(int orgId)
         {
             try
             {
@@ -81,8 +95,5 @@ namespace online_service_app_business_functions.Controllers
                 return Results.NotFound(new { message = ex.Message });
             }
         }
-
-        //работа с типами организаций и сферами деятельности?
-
     }
 }

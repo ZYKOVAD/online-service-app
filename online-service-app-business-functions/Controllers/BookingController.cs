@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using online_service_app_business_functions.db_layer;
+using online_service_app_business_functions.DbLayer;
 using online_service_app_business_functions.Models;
 using online_service_app_business_functions.RabbitMQ;
-using online_service_app_business_functions.Servises;
+using online_service_app_business_functions.Services;
 using System.Diagnostics;
 
 namespace online_service_app_business_functions.Controllers
@@ -23,7 +23,7 @@ namespace online_service_app_business_functions.Controllers
         //получение списка предыдущих записей клиента
         //[Authorize(Policy = "Default")]
         [HttpGet]
-        public IResult GetBookingsByClient(int clientId)
+        public IResult GetAllByClient(int clientId)
         {
             try
             {
@@ -34,8 +34,8 @@ namespace online_service_app_business_functions.Controllers
 
                 stopwatch.Stop();
 
-                //RabbitMqModelMessage message = new RabbitMqModelMessage("GetBookingsByClient", stopwatch.ElapsedMilliseconds);
-                //_rabbit.SendMessage(message);
+                RabbitMqModelMessage message = new RabbitMqModelMessage("GetBookingsByClient", stopwatch.ElapsedMilliseconds);
+                _rabbit.SendMessage(message);
 
                 return Results.Json(bookings);
             }
@@ -48,11 +48,11 @@ namespace online_service_app_business_functions.Controllers
 
         //получение информации о записи по id
         [HttpGet]
-        public IResult GetBooking(int bookingId)
+        public IResult Get(int id)
         {
             try
             {
-                Booking booking = _bookingService.Get(bookingId);
+                Booking booking = _bookingService.Get(id);
                 return Results.Json(booking);
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace online_service_app_business_functions.Controllers
             }
         }
 
-        //получение доступного времени мастера для записи (окошек) - не дописан
+        //todo получение доступного времени мастера для записи (окошек) - не дописан 
         [HttpGet]
         public IResult GetAvailableTime(int masterId, int serviceId, DateOnly date)
         {
@@ -78,7 +78,7 @@ namespace online_service_app_business_functions.Controllers
 
         //создание записи
         [HttpPost]
-        public IResult CreateBooking(int organizationId, int clientId, DateTime dateTime, int masterId, int serviceId)
+        public IResult Create(int organizationId, int clientId, DateTime dateTime, int masterId, int serviceId)
         {
             try
             {
@@ -91,9 +91,9 @@ namespace online_service_app_business_functions.Controllers
             }
         }
 
-        //перенос записи
+        //редактирование записи
         [HttpPut]
-        public async Task<IResult> UpdateBooking(int id, DateTime dateTime, int statusId)
+        public async Task<IResult> Update(int id, DateTime dateTime, int statusId)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace online_service_app_business_functions.Controllers
 
         //удаление записи (отмена)
         [HttpDelete]
-        public IResult DeleteBooking(int id)
+        public IResult Delete(int id)
         {
             try
             {
@@ -120,8 +120,5 @@ namespace online_service_app_business_functions.Controllers
                 return Results.NotFound(new { message = ex.Message });
             }
         }
-
-        //работа со статусами? (создание, удаление, редактирование)
-
     }
 }

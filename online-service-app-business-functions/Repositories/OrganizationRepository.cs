@@ -1,4 +1,4 @@
-﻿using online_service_app_business_functions.db_layer;
+﻿using online_service_app_business_functions.DbLayer;
 using online_service_app_business_functions.Models;
 
 namespace online_service_app_business_functions.Repositories
@@ -18,21 +18,21 @@ namespace online_service_app_business_functions.Repositories
             else return organization;
         }
 
-        public List<Organization> GetOrganizationsByClient(int clientId)
+        public List<Organization> GetAll()
+        {
+            return _db.Organizations.ToList();
+        }
+
+        public List<int> GetOrganizationIdsByClient(int clientId)
         {
             List<Booking> bookings = _db.Bookings.Where(b => b.ClientId == clientId).ToList();
             List<int> orgIds = new List<int>();
+            List<Organization> organizations = new List<Organization>();
             foreach (Booking booking in bookings)
             {
                 orgIds.Add(booking.OrganizationId);
             }
-            List<Organization> organizations = new List<Organization>();
-            foreach (int Id in orgIds)
-            {
-                Organization organization = _db.Organizations.SingleOrDefault(o => o.Id == Id);
-                organizations.Add(organization);
-            }
-            return organizations;
+            return orgIds;
         }
 
         public Organization Update(int id, OrganizationModel model)
