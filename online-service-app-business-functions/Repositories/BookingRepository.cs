@@ -24,6 +24,13 @@ namespace online_service_app_business_functions.Repositories
             return bookings;
         }
 
+        public List<Booking> GetByMasterAndDate(int masterId, DateOnly date)
+        {
+            DateTime dateTime = new DateTime(date, TimeOnly.MinValue);
+            List<Booking> bookings = _db.Bookings.Where(b => b.MasterId == masterId && b.DateTime.Date == dateTime).ToList();
+            return bookings;
+        }
+
         public Booking Create(int orgId, int clientId, DateTime dateTime, int masterId, int serviceId)
         {
             _countId += 1;

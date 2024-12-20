@@ -5,6 +5,17 @@ namespace online_service_app_business_functions.DbLayer;
 
 public partial class Service
 {
+    public Service() { }
+    public Service(int id, string name, int organizationId, short duration, int price, string? description)
+    {
+        Id = id;
+        Name = name;
+        OrganizationId = organizationId;
+        Duration = duration;
+        Price = price;
+        Description = description;
+    }
+
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
