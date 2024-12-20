@@ -61,13 +61,13 @@ namespace online_service_app_business_functions.Controllers
             }
         }
 
-        //todo получение доступного времени мастера для записи (окошек) - не дописан 
+        //получение доступного времени мастера для записи (окошек)
         [HttpGet]
         public IResult GetAvailableTime(int masterId, int serviceId, DateOnly date)
         {
             try
             {
-                List<TimeOnly> times = _bookingService.GetAvailableTime(masterId, serviceId, date);
+                Dictionary<TimeOnly, bool> times = _bookingService.GetAvailableTime(masterId, serviceId, date);
                 return Results.Json(times);
             }
             catch (Exception ex)

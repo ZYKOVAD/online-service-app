@@ -75,10 +75,6 @@ namespace online_service_app_business_functions.Controllers
             }
         }
 
-        //получение списка мастеров, которые оказывают данную услугу
-
-        //редактирование списка мастеров, которые оказывают данную услугу
-
         //добавление услуги
         [HttpPost]
         public IResult Create(int organizationId, ServiceModel model)

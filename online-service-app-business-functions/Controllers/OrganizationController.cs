@@ -30,7 +30,6 @@ namespace online_service_app_business_functions.Controllers
             {
                 return Results.Json(new { message = ex.Message });
             }
-
         }
 
         //получение информации об организации по id
@@ -62,8 +61,6 @@ namespace online_service_app_business_functions.Controllers
                 return Results.Json(new { message = ex.Message });
             }
         }
-
-        //todo поиск организации по названию (подстроке)
 
         //изменение информации об организации
         //[Authorize(Policy = "OnlyForOrganization")]

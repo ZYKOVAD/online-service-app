@@ -1,8 +1,6 @@
 ﻿using online_service_app_business_functions.DbLayer;
 using online_service_app_business_functions.Models;
 using online_service_app_business_functions.Repositories;
-using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace online_service_app_business_functions.Services
 {
@@ -12,9 +10,12 @@ namespace online_service_app_business_functions.Services
         private readonly MasterRepository _masterRepository;
         private readonly ServiceRepository _serviceRepository;
         private readonly WorkdayRepository _workdayRepository;
-        public BookingService(BookingRepository repository)
+        public BookingService(BookingRepository bRepos, MasterRepository mRepos, ServiceRepository sRepos, WorkdayRepository _wRepos)
         {
-            _bookingRepository = repository;
+            _bookingRepository = bRepos;
+            _masterRepository = mRepos;
+            _serviceRepository = sRepos;
+            _workdayRepository = _wRepos;
         }
 
         public Booking Get(int id)
@@ -71,7 +72,7 @@ namespace online_service_app_business_functions.Services
                 availableTimes[bTime] = false;
                 TimeOnly t = bTime;
 
-                if ((double)duration % 15.0 == 0)
+                if (duration % 15 == 0)
                 {
                     int k = (duration / 15);
                     for (int i = 1; i < k; i++)
@@ -90,6 +91,7 @@ namespace online_service_app_business_functions.Services
                     }
                 }
             }
+            return availableTimes;
         }
 
     }

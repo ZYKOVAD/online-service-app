@@ -41,16 +41,22 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<OnlineServiceDbContext>();
+
 builder.Services.AddScoped<BookingService>();
 builder.Services.AddScoped<BookingRepository>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<ClientRepository>();
-builder.Services.AddScoped<OrganizationService>();
-builder.Services.AddScoped<OrganizationRepository>();
 builder.Services.AddScoped<MasterService>();
 builder.Services.AddScoped<MasterRepository>();
+builder.Services.AddScoped<OrganizationService>();
+builder.Services.AddScoped<OrganizationRepository>();
+builder.Services.AddScoped<ServiceService>();
+builder.Services.AddScoped<ServiceRepository>();
 builder.Services.AddScoped<WorkdayByDefaultService>();
 builder.Services.AddScoped<WorkdayByDefaultRepository>();
+builder.Services.AddScoped<WorkdayService>();
+builder.Services.AddScoped<WorkdayRepository>();
+
 builder.Services.AddScoped<RabbitMqService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
