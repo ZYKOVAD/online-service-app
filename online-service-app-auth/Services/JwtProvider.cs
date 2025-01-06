@@ -1,14 +1,14 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using online_service_app_auth.db_layer;
-using online_service_app_auth.models;
+using online_service_app_auth.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace online_service_app_auth
+namespace online_service_app_auth.Services
 {
-    public class jwtProvider
+    public class JwtProvider
     {
         public string GenerateToken(IUser user)
         {

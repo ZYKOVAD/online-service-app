@@ -1,4 +1,4 @@
-﻿using online_service_app_auth.models;
+﻿using online_service_app_auth.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +7,7 @@ namespace online_service_app_auth.db_layer;
 public partial class Organization : IUser 
 {
     private Organization() { }
-    private Organization(int id, string name, int typeId, int? shereId, string? phone, string? address, string? webAddress, string email, string password)
+    public Organization(int id, string name, int typeId, int? shereId, string? phone, string? address, string? webAddress, string email, string password)
     {
         Id = id;
         Name = name;
@@ -45,11 +45,5 @@ public partial class Organization : IUser
 
     public virtual SphereOfOrganization? Sphere { get; set; }
 
-    public virtual TypeOfOrganization Type { get; set; } = null!;
-
-    // метод создания организации
-    public static Organization Create(int id, string name, int typeId, int? shereId, string? phone, string? address, string? webAddress, string email, string password)
-    {
-        return new Organization(id, name, typeId, shereId, phone, address, webAddress, email, password);
-    }
+    public virtual TypeOfOrganization Type { get; set; } = null!;    
 }

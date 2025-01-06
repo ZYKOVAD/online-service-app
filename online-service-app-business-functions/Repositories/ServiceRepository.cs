@@ -17,14 +17,14 @@ namespace online_service_app_business_functions.Repositories
 
         public Service Get(int id)
         {
-            Service service = _db.Services.SingleOrDefault(s => s.Id == id);
+            Service? service = _db.Services.SingleOrDefault(s => s.Id == id);
             if (service == null) throw new Exception("Услуга не найдена");
             return service;
         }
 
         public List<Service> GetAllByOrganization(int organizationId)
         {
-            Organization organization = _db.Organizations.SingleOrDefault(o => o.Id == organizationId);
+            Organization? organization = _db.Organizations.SingleOrDefault(o => o.Id == organizationId);
             if (organization == null) throw new Exception("Организация не найдена");
             List<Service> services = _db.Services.Where(s => s.OrganizationId == organizationId).ToList();
             return services;
@@ -32,7 +32,7 @@ namespace online_service_app_business_functions.Repositories
 
         public List<Service> GettAllByMaster(int masterId)
         {
-            Master master = _db.Masters.SingleOrDefault(m => m.Id == masterId);
+            Master? master = _db.Masters.SingleOrDefault(m => m.Id == masterId);
             if (master == null) throw new Exception("Мастер не найден");
             List<Service> services = master.Services.ToList();
             return services;
@@ -40,14 +40,14 @@ namespace online_service_app_business_functions.Repositories
 
         public List<Service> UpdateServicesByMaster(int masterId, List<int> serviceIds)
         {
-            Master master = _db.Masters.SingleOrDefault(m => m.Id == masterId);
+            Master? master = _db.Masters.SingleOrDefault(m => m.Id == masterId);
             if (master == null) throw new Exception("Мастер не найден");
             List<Service> newServices = new List<Service>();
             master.Services = newServices;
 
             foreach (int serviceId in serviceIds)
             {
-                Service service = _db.Services.SingleOrDefault(s => s.Id == serviceId);
+                Service? service = _db.Services.SingleOrDefault(s => s.Id == serviceId);
                 if (service == null) throw new Exception("Услуга не найдена");
                 master.Services.Add(service);
             }
@@ -66,7 +66,7 @@ namespace online_service_app_business_functions.Repositories
 
         public Service Update(int id, ServiceModel model)
         {
-            Service service = _db.Services.SingleOrDefault(s => s.Id == id);
+            Service? service = _db.Services.SingleOrDefault(s => s.Id == id);
             if (service == null) throw new Exception("Услуга не найдена");
             service.Name = model.Name;
             service.Description = model.Description;
@@ -78,7 +78,7 @@ namespace online_service_app_business_functions.Repositories
 
         public bool Delete(int id)
         {
-            Service service = _db.Services.SingleOrDefault(s => s.Id == id);
+            Service? service = _db.Services.SingleOrDefault(s => s.Id == id);
             if (service == null) throw new Exception("Услуга не найдена");
             _db.Remove(service);
             _db.SaveChanges();

@@ -15,17 +15,20 @@ namespace online_service_app_business_functions.Services
 
         public Client Get(int id)
         {
-            return _clientRepository.Get(id);
+            Client client = _clientRepository.Get(id);
+            return client;
         }
 
         public Client Update(int id, ClientModel model)
         {
-            return _clientRepository.Update(id, model);
+            Client client = _clientRepository.Update(id, model);
+            return client;
         }
 
         public bool Delete(int id)
         {
-            return _clientRepository.Delete(id);
+            bool result = _clientRepository.Delete(id);
+            return result;
         }
     }
 }

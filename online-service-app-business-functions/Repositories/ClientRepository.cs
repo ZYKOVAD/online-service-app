@@ -13,37 +13,31 @@ namespace online_service_app_business_functions.Repositories
 
         public Client Get(int id)
         {
-            Client client = _db.Clients.SingleOrDefault(o => o.Id == id);
+            Client? client = _db.Clients.SingleOrDefault(o => o.Id == id);
             if (client == null) throw new Exception("Клиент с таким id не найден");
-            else return client;
+            return client;
         }
 
         public Client Update(int  id, ClientModel model)
         {
-            Client client = _db.Clients.SingleOrDefault(o => o.Id == id);
+            Client? client = _db.Clients.SingleOrDefault(o => o.Id == id);
             if (client == null) throw new Exception("Клиент с таким id не найден");
-            else
-            {
-                client.Name = model.Name;
-                client.Surname = model.Surname;
-                client.Patronymic = model.Patronymic;
-                client.Phone = model.Phone;
-                client.Email = model.Email;
-                _db.SaveChanges();
-                return client;
-            }
+            client.Name = model.Name;
+            client.Surname = model.Surname;
+            client.Patronymic = model.Patronymic;
+            client.Phone = model.Phone;
+            client.Email = model.Email;
+            _db.SaveChanges();
+            return client;
         }
 
         public bool Delete(int id)
         {
-            Client client = _db.Clients.SingleOrDefault(o => o.Id == id);
+            Client? client = _db.Clients.SingleOrDefault(o => o.Id == id);
             if (client == null) throw new Exception("Клиент с таким id не найден");
-            else
-            {
-                _db.Clients.Remove(client);
-                _db.SaveChanges();
-                return true;
-            }
+            _db.Clients.Remove(client);
+            _db.SaveChanges();
+            return true;
         }
     }
 }

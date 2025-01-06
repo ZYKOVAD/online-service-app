@@ -14,21 +14,25 @@ namespace online_service_app_business_functions.Services
 
         public Master Get(int id)
         {
-            return _masterRepository.Get(id);
+            Master master = _masterRepository.Get(id);
+            return master;
         }
         public List<Master> GetByOrganization(int organizationId)
         {
-            return _masterRepository.GetByOrganization(organizationId);
+            List<Master> masters = _masterRepository.GetByOrganization(organizationId);
+            return masters;
         }
 
         public Master Update(int id, MasterModel model)
         {
-            return _masterRepository.Update(id, model);
+            Master master = _masterRepository.Update(id, model);
+            return master;
         }
 
         public bool Delete(int id)
         {
-            return _masterRepository.Delete(id);
+            bool result = _masterRepository.Delete(id);
+            return result;
         }
     }
 }

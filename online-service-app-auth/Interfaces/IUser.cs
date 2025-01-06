@@ -1,4 +1,4 @@
-﻿namespace online_service_app_auth.models
+﻿namespace online_service_app_auth.Interfaces
 {
     public interface IUser
     {

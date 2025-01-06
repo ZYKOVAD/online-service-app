@@ -14,27 +14,32 @@ namespace online_service_app_business_functions.Services
 
         public Organization Get(int id)
         {
-            return _organizationRepository.Get(id);
+            Organization organization = _organizationRepository.Get(id);
+            return organization;
         }
 
         public List<Organization> GetAll()
         {
-            return _organizationRepository.GetAll();
+            List<Organization> organizations = _organizationRepository.GetAll();
+            return organizations;
         }
 
         public List<int> GetOrganizationIdsByClient(int clientId)
         {
-            return _organizationRepository.GetOrganizationIdsByClient(clientId);
+            List<int> organizationIds = _organizationRepository.GetOrganizationIdsByClient(clientId);
+            return organizationIds;
         }
 
         public Organization Update(int id, OrganizationModel model)
         {
-            return _organizationRepository.Update(id, model);
+            Organization organization = _organizationRepository.Update(id, model);
+            return organization;
         }
 
         public bool Delete(int id)
         {
-            return _organizationRepository.Delete(id);
+            bool result = _organizationRepository.Delete(id);
+            return result;
         }
     }
 }

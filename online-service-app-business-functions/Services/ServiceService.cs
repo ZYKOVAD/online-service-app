@@ -14,36 +14,43 @@ namespace online_service_app_business_functions.Services
 
         public Service Get(int id)
         {
-            return _serviceRepository.Get(id);
+            Service service = _serviceRepository.Get(id);
+            return service;
         }
 
         public List<Service> GetAllByOrganization(int organizationId)
         {
-            return _serviceRepository.GetAllByOrganization(organizationId);
+            List<Service> services = _serviceRepository.GetAllByOrganization(organizationId);
+            return services;
         }
 
         public List<Service> GetAllByMaster(int masterId)
         {
-            return _serviceRepository.GettAllByMaster(masterId);
+            List<Service> services = _serviceRepository.GettAllByMaster(masterId);
+            return services;
         }
 
         public List<Service> UpdateServicesByMaster(int masterId, List<int> serviceIds)
         {
-            return _serviceRepository.UpdateServicesByMaster(masterId, serviceIds);
+            List<Service> services = _serviceRepository.UpdateServicesByMaster(masterId, serviceIds);
+            return services;
         }
 
         public Service Create(int organizationId, ServiceModel model)
         {
-            return _serviceRepository.Create(organizationId, model);
+            Service service = _serviceRepository.Create(organizationId, model);
+            return service;
         }
         public Service Update(int id, ServiceModel model)
         {
-            return _serviceRepository.Update(id, model);
+            Service service = _serviceRepository.Update(id, model);
+            return service;
         }
 
         public bool Delete(int id)
         {
-            return _serviceRepository.Delete(id);
+            bool result = _serviceRepository.Delete(id);
+            return result;
         }
     }
 }

@@ -15,7 +15,9 @@ namespace online_service_app_business_functions.Repositories
 
         public Booking Get(int id)
         {
-            return _db.Bookings.SingleOrDefault(b => b.Id == id);
+            Booking? booking = _db.Bookings.SingleOrDefault(b => b.Id == id);
+            if (booking == null) throw new Exception("Запись не найдена");
+            return booking;
         }
 
         public List<Booking> GetByClient(int clientId)
@@ -34,15 +36,15 @@ namespace online_service_app_business_functions.Repositories
         public Booking Create(int orgId, int clientId, DateTime dateTime, int masterId, int serviceId)
         {
             _countId += 1;
-            Master master = _db.Masters.SingleOrDefault(m => m.Id == masterId);
-            Organization organization = _db.Organizations.SingleOrDefault(p => p.Id == orgId);
-            Service service = _db.Services.SingleOrDefault(s => s.Id == serviceId);
-            List<Master> masters = service.Masters.ToList();
-            bool isMasterService = false;
+            Master? master = _db.Masters.SingleOrDefault(m => m.Id == masterId);
+            Organization? organization = _db.Organizations.SingleOrDefault(p => p.Id == orgId);
+            Service? service = _db.Services.SingleOrDefault(s => s.Id == serviceId);
             if (organization == null) throw new Exception("Организация не найдена");
             if (master == null) throw new Exception("Мастер не найден");
-            if (service == null) throw new Exception("Услуга не найдена");
             if (master.OrganizationId != orgId) throw new Exception("Мастер не привязан к этой организации");
+            if (service == null) throw new Exception("Услуга не найдена");
+            List<Master> masters = service.Masters.ToList();
+            bool isMasterService = false;
             foreach (var m in masters)
             {
                 if (m.Id == masterId) isMasterService = true;
@@ -58,7 +60,8 @@ namespace online_service_app_business_functions.Repositories
 
         public Booking Update(int id, DateTime dateTime, int statusId)
         {
-            Booking booking = _db.Bookings.SingleOrDefault(b => b.Id == id);
+            Booking? booking = _db.Bookings.SingleOrDefault(b => b.Id == id);
+            if (booking == null) throw new Exception("Запись не найдена");
             booking.DateTime = dateTime;
             booking.StatusId = statusId;
             _db.SaveChanges();
@@ -67,7 +70,7 @@ namespace online_service_app_business_functions.Repositories
 
         public bool Delete(int id)
         {
-            Booking booking = _db.Bookings.SingleOrDefault(b => b.Id == id);
+            Booking? booking = _db.Bookings.SingleOrDefault(b => b.Id == id);
             if (booking == null) throw new Exception("Запись не найдена");
             _db.Bookings.Remove(booking);
             _db.SaveChanges();

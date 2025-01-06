@@ -1,6 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Npgsql.Internal.Postgres;
 using online_service_app_auth.db_layer;
 using online_service_app_auth.models;
+using online_service_app_auth.Services;
+using System;
+using System.Diagnostics.Metrics;
+using System.Net;
+using System.Numerics;
+using System.Xml.Linq;
 
 namespace online_service_app_auth.Controllers
 {
@@ -8,12 +15,16 @@ namespace online_service_app_auth.Controllers
     [Route("[controller]/[action]")]
     public class AuthController : ControllerBase
     {
-        private readonly OnlineServiceDbContext _db;
         private readonly UserService _userService;
-        public AuthController(OnlineServiceDbContext db, PasswordHasher hasher, UserService userService)
+        private readonly ClientService _clientService;
+        private readonly MasterService _masterService;
+        private readonly OrganizationService _organizationService;
+        public AuthController(ClientService clientService, UserService userService, MasterService masterService, OrganizationService organizationService)
         {
-            _db = db;
             _userService = userService;
+            _clientService = clientService;
+            _masterService = masterService;
+            _organizationService = organizationService;
         }
 
         // регистрация клиента
@@ -22,22 +33,14 @@ namespace online_service_app_auth.Controllers
         {
             try
             {
-                Client? target = _db.Clients.FirstOrDefault(c => c.Email == newClient.Email);
-                if (target == null)
-                {
-                    Client client = _userService.RegisterClient(newClient);
-                    return Results.Json(client);
-                }
-                else
-                {
-                    return Results.NotFound(new { message = "Клиент с таким email уже зарегистрирован." });
-                }
+                Client client = _clientService.Register(newClient.Name, newClient.Surname, newClient.Patronymic, newClient.Phone, newClient.Email, newClient.Password);
+                return Results.Json(client);
             }
             catch (Exception ex)
             {
                 return Results.NotFound(new { message = ex.Message });
             }
-            
+
         }
 
         // авторизация клиента
@@ -46,22 +49,14 @@ namespace online_service_app_auth.Controllers
         {
             try
             {
-                Client? target = _db.Clients.FirstOrDefault(c => c.Email == email);
-                if (target != null)
-                {
-                    var token = _userService.Login(password, target);
-                    return Results.Json(token);
-                }
-                else
-                {
-                    return Results.NotFound(new { message = "Клиент с таким email не зарегистрирован." });
-                }
+                Client? client = _clientService.GetByEmail(email);
+                var token = _userService.Login(password, client);
+                return Results.Json(token);
             }
             catch (Exception ex)
             {
                 return Results.NotFound(new { message = ex.Message });
             }
-            
         }
 
         // регистрация мастера
@@ -70,46 +65,29 @@ namespace online_service_app_auth.Controllers
         {
             try
             {
-                Master? target = _db.Masters.FirstOrDefault(c => c.Email == newMaster.Email);
-                if (target == null)
-                {
-                    Master master = _userService.RegisterMaster(newMaster);
-                    return Results.Json(master);
-                }
-                else
-                {
-                    return Results.NotFound(new { message = "Мастер с таким email уже зарегистрирован." });
-                }
+                Master master = _masterService.Register(newMaster.Name, newMaster.Surname, newMaster.Patronymic, newMaster.Phone, newMaster.Email, newMaster.Password, newMaster.SpecializationId, newMaster.OrganizationId);
+                return Results.Json(master);
             }
             catch (Exception ex)
             {
                 return Results.NotFound(new { message = ex.Message });
             }
-
         }
-
+        
         // авторизация мастера
         [HttpPost]
         public IResult LoginMaster(string email, string password)
         {
             try
             {
-                Master? target = _db.Masters.FirstOrDefault(c => c.Email == email);
-                if (target != null)
-                {
-                    var token = _userService.Login(password, target);
-                    return Results.Json(token);
-                }
-                else
-                {
-                    return Results.NotFound(new { message = "Мастер с таким email не зарегистрирован." });
-                }
+                Master? master = _masterService.GetByEmail(email);
+                var token = _userService.Login(password, master);
+                return Results.Json(token);
             }
             catch (Exception ex)
             {
                 return Results.NotFound(new { message = ex.Message });
             }
-
         }
 
         // регистрация организации
@@ -118,16 +96,8 @@ namespace online_service_app_auth.Controllers
         {
             try
             {
-                Organization? target = _db.Organizations.FirstOrDefault(c => c.Email == newOrganization.Email);
-                if (target == null)
-                {
-                    Organization organization = _userService.RegisterOrganization(newOrganization);
-                    return Results.Json(organization);
-                }
-                else
-                {
-                    return Results.NotFound(new { message = "Организация с таким email уже зарегистрирована." });
-                }
+                Organization organization = _organizationService.Register(newOrganization.Name, newOrganization.TypeId, newOrganization.SphereId, newOrganization.Phone, newOrganization.Address, newOrganization.WebAddress, newOrganization.Email, newOrganization.Password);
+                return Results.Json(organization);
             }
             catch (Exception ex)
             {
@@ -143,16 +113,9 @@ namespace online_service_app_auth.Controllers
         {
             try
             {
-                Organization? target = _db.Organizations.FirstOrDefault(c => c.Email == email);
-                if (target != null)
-                {
-                    var token = _userService.Login(password, target);
-                    return Results.Json(token);
-                }
-                else
-                {
-                    return Results.NotFound(new { message = "Организация с таким email не зарегистрирована." });
-                }
+                Organization? organization = _organizationService.GetByEmail(email);
+                var token = _userService.Login(password, organization);
+                return Results.Json(token);
             }
             catch (Exception ex)
             {

@@ -15,57 +15,48 @@ namespace online_service_app_business_functions.Repositories
 
         public WorkdayByDefault Get(int id)
         {
-            WorkdayByDefault workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.Id == id);
+            WorkdayByDefault? workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.Id == id);
             if (workdayByDefault == null) throw new Exception("Не найдено");
-            else return workdayByDefault;
+            return workdayByDefault;
         }
 
         public WorkdayByDefault GetByMaster(int masterId)
         {
-            WorkdayByDefault workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.MasterId == masterId);
+            WorkdayByDefault? workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.MasterId == masterId);
             if (workdayByDefault == null) throw new Exception("Не найдено");
-            else return workdayByDefault; 
+            return workdayByDefault; 
         }
 
         public WorkdayByDefault Create(int masterId, WorkdayByDefaultModel model)
         {
             countId += 1;
-            WorkdayByDefault workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.MasterId==masterId);
-            if (workdayByDefault == null)
-            {
-                workdayByDefault = new WorkdayByDefault(countId, masterId, model.TimeStart, model.TimeEnd, model.BreakStart, model.BreakEnd);
-                _db.WorkdayByDefaults.Add(workdayByDefault);
-                _db.SaveChanges();
-                return workdayByDefault;
-            }
-            else throw new Exception("Настройки дня по умолчанию уже существуют");
+            WorkdayByDefault? workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.MasterId==masterId);
+            if (workdayByDefault != null) throw new Exception("Настройки дня по умолчанию уже существуют");
+            workdayByDefault = new WorkdayByDefault(countId, masterId, model.TimeStart, model.TimeEnd, model.BreakStart, model.BreakEnd);
+            _db.WorkdayByDefaults.Add(workdayByDefault);
+            _db.SaveChanges();
+            return workdayByDefault;
         }
 
         public WorkdayByDefault Update(int id, WorkdayByDefaultModel model)
         {
-            WorkdayByDefault workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.Id == id);
+            WorkdayByDefault? workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.Id == id);
             if (workdayByDefault == null) throw new Exception("Не найдено");
-            else
-            {
-                workdayByDefault.TimeStart = model.TimeStart;
-                workdayByDefault.TimeEnd = model.TimeEnd;
-                workdayByDefault.BreakStart = model.BreakStart;
-                workdayByDefault.BreakEnd = model.BreakEnd;
-                _db.SaveChanges();
-                return workdayByDefault;
-            }
+            workdayByDefault.TimeStart = model.TimeStart;
+            workdayByDefault.TimeEnd = model.TimeEnd;
+            workdayByDefault.BreakStart = model.BreakStart;
+            workdayByDefault.BreakEnd = model.BreakEnd;
+            _db.SaveChanges();
+            return workdayByDefault;
         }
 
         public bool Delete(int id)
         {
-            WorkdayByDefault workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.Id == id);
+            WorkdayByDefault? workdayByDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.Id == id);
             if (workdayByDefault == null) throw new Exception("Не найдено");
-            else
-            {
-                _db.WorkdayByDefaults.Remove(workdayByDefault);
-                _db.SaveChanges();
-                return true;
-            }
+            _db.WorkdayByDefaults.Remove(workdayByDefault);
+            _db.SaveChanges();
+            return true;
         }
     }
 }

@@ -15,32 +15,38 @@ namespace online_service_app_business_functions.Services
 
         public List<Workday> GetAllByMaster(int masterId)
         {
-            return _workdayRepository.GetAllByMaster(masterId);
+            List<Workday> workdays = _workdayRepository.GetAllByMaster(masterId);
+            return workdays;
         }
 
         public Workday GetByMasterAndDate(int masterId, DateOnly date)
         {
-            return _workdayRepository.GetByMasterAndDate(masterId, date);
+            Workday workday = _workdayRepository.GetByMasterAndDate(masterId, date);
+            return workday;
         }
 
         public Workday Create(int masterId, WorkdayModel model)
         {
-            return _workdayRepository.Create(masterId, model);
+            Workday workday = _workdayRepository.Create(masterId, model);
+            return workday;
         }
 
         public List<Workday> CreateByDefault(int masterId, List<DateOnly> dates)
         {
-            return _workdayRepository.CreateByDefault(masterId, dates);
+            List<Workday> workdays = _workdayRepository.CreateByDefault(masterId, dates);
+            return workdays;
         }
 
         public Workday Update(int id, WorkdayModel model)
         {
-            return _workdayRepository.Update(id, model);
+            Workday workday = _workdayRepository.Update(id, model);
+            return workday;
         }
 
         public bool Delete(int id)
         {
-            return _workdayRepository.Delete(id);
+            bool result = _workdayRepository.Delete(id);
+            return result;
         }
     }
 }

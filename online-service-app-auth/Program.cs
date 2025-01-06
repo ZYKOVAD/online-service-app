@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
-using online_service_app_auth;
 using online_service_app_auth.db_layer;
+using online_service_app_auth.repositories;
+using online_service_app_auth.Repositories;
+using online_service_app_auth.Services;
 using System.Security.Claims;
 using System.Text;
 
@@ -24,9 +26,15 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors();
 builder.Services.AddScoped<OnlineServiceDbContext>();
-builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<PasswordHasher>();
-builder.Services.AddScoped<jwtProvider>();
+builder.Services.AddScoped<JwtProvider>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ClientRepository>();
+builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<MasterRepository>();
+builder.Services.AddScoped<MasterService>();
+builder.Services.AddScoped<OrganizationRepository>();
+builder.Services.AddScoped<OrganizationService>();
 
 var app = builder.Build();
 

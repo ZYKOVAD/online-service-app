@@ -20,25 +20,30 @@ namespace online_service_app_business_functions.Services
 
         public Booking Get(int id)
         {
-            return _bookingRepository.Get(id);
+            Booking booking = _bookingRepository.Get(id);
+            return booking;
         }
         public List<Booking> GetBookingsByClient(int clientId)
         {   
-            return _bookingRepository.GetByClient(clientId);
+            List<Booking> bookings = _bookingRepository.GetByClient(clientId);
+            return bookings;
         }
 
         public Booking Create(int organizationId, int clientId, DateTime dateTime, int masterId, int serviceId)
         {
-            return _bookingRepository.Create(organizationId, clientId, dateTime, masterId, serviceId);
+            Booking booking = _bookingRepository.Create(organizationId, clientId, dateTime, masterId, serviceId);
+            return booking;
         }
         public Booking Update(int id, DateTime dateTime, int statusId)
         {
-            return _bookingRepository.Update(id, dateTime, statusId);
+            Booking booking = _bookingRepository.Update(id, dateTime, statusId);
+            return booking;
         }
 
         public bool Delete(int id)
         {
-            return _bookingRepository.Delete(id);
+            bool result = _bookingRepository.Delete(id);
+            return result;
         }
 
         public Dictionary<TimeOnly, bool> GetAvailableTime(int masterId, int serviceId, DateOnly date)

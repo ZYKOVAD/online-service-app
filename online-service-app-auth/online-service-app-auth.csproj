@@ -11,10 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="models\Новая папка\**" />
-    <Content Remove="models\Новая папка\**" />
-    <EmbeddedResource Remove="models\Новая папка\**" />
-    <None Remove="models\Новая папка\**" />
+    <Compile Remove="Models\Новая папка\**" />
+    <Content Remove="Models\Новая папка\**" />
+    <EmbeddedResource Remove="Models\Новая папка\**" />
+    <None Remove="Models\Новая папка\**" />
   </ItemGroup>
 
   <ItemGroup>

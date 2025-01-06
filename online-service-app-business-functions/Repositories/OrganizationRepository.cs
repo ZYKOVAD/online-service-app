@@ -13,14 +13,15 @@ namespace online_service_app_business_functions.Repositories
 
         public Organization Get(int id)
         {
-            Organization organization = _db.Organizations.SingleOrDefault(o => o.Id == id);
+            Organization? organization = _db.Organizations.SingleOrDefault(o => o.Id == id);
             if (organization == null) throw new Exception("Организация с таким id не найдена");
-            else return organization;
+            return organization;
         }
 
         public List<Organization> GetAll()
         {
-            return _db.Organizations.ToList();
+            List<Organization> organizations = _db.Organizations.ToList();
+            return organizations;
         }
 
         public List<int> GetOrganizationIdsByClient(int clientId)
@@ -37,31 +38,25 @@ namespace online_service_app_business_functions.Repositories
 
         public Organization Update(int id, OrganizationModel model)
         {
-            Organization organization = _db.Organizations.SingleOrDefault(o => o.Id == id);
+            Organization? organization = _db.Organizations.SingleOrDefault(o => o.Id == id);
             if (organization == null) throw new Exception("Организация с таким id не найдена");
-            else
-            {
-                organization.Name = model.Name;
-                organization.TypeId = model.TypeId;
-                organization.SphereId = model.SphereId;
-                organization.Phone = model.Phone;
-                organization.Address = model.Address;
-                organization.WebAddress = model.WebAddress;
-                organization.Email = model.Email;
-                return organization;
-            }
+            organization.Name = model.Name;
+            organization.TypeId = model.TypeId;
+            organization.SphereId = model.SphereId;
+            organization.Phone = model.Phone;
+            organization.Address = model.Address;
+            organization.WebAddress = model.WebAddress;
+            organization.Email = model.Email;
+            return organization;
         }
 
         public bool Delete(int id)
         {
-            Organization organization = _db.Organizations.SingleOrDefault(o => o.Id == id);
+            Organization? organization = _db.Organizations.SingleOrDefault(o => o.Id == id);
             if (organization == null) throw new Exception("Организация с таким id не найдена");
-            else
-            {
-                _db.Organizations.Remove(organization);
-                _db.SaveChanges();
-                return true;
-            }
+            _db.Organizations.Remove(organization);
+            _db.SaveChanges();
+            return true;
         }
     }
 }

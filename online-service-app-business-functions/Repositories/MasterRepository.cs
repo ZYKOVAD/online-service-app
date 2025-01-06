@@ -13,9 +13,9 @@ namespace online_service_app_business_functions.Repositories
 
         public Master Get(int id)
         {
-            Master master = _db.Masters.SingleOrDefault(m => m.Id == id);
+            Master? master = _db.Masters.SingleOrDefault(m => m.Id == id);
             if (master == null) throw new Exception("Мастер с таким id не найден");
-            else return master;
+            return master;
         }
 
         public List<Master> GetByOrganization(int organizationId)
@@ -26,32 +26,26 @@ namespace online_service_app_business_functions.Repositories
 
         public Master Update(int id, MasterModel model)
         {
-            Master master = _db.Masters.SingleOrDefault(m => m.Id == id);
+            Master? master = _db.Masters.SingleOrDefault(m => m.Id == id);
             if (master == null) throw new Exception("Мастер с таким id не найден");
-            else
-            {
-                master.Name = model.Name;
-                master.Surname = model.Surname;
-                master.Patronymic = model.Patronymic; 
-                master.Phone = model.Phone;
-                master.Email = model.Email;
-                master.SpecializationId = model.SpecializationId;
-                master.OrganizationId = model.OrganizationId;
-                _db.SaveChanges();
-                return master;
-            }
+            master.Name = model.Name;
+            master.Surname = model.Surname;
+            master.Patronymic = model.Patronymic; 
+            master.Phone = model.Phone;
+            master.Email = model.Email;
+            master.SpecializationId = model.SpecializationId;
+            master.OrganizationId = model.OrganizationId;
+            _db.SaveChanges();
+            return master;
         }
 
         public bool Delete(int id)
         {
-            Master master = _db.Masters.SingleOrDefault(m => m.Id == id);
+            Master? master = _db.Masters.SingleOrDefault(m => m.Id == id);
             if (master == null) throw new Exception("Мастер с таким id не найден");
-            else
-            {
-                _db.Masters.Remove(master);
-                _db.SaveChanges();
-                return true;
-            }
+            _db.Masters.Remove(master);
+            _db.SaveChanges();
+            return true;
         }
     }
 }

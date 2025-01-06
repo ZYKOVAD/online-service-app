@@ -22,7 +22,7 @@ namespace online_service_app_business_functions.Repositories
 
         public Workday GetByMasterAndDate(int masterId, DateOnly date)
         {
-            Workday workday = _db.Workdays.SingleOrDefault(w => w.MasterId == masterId && w.Date == date);
+            Workday? workday = _db.Workdays.SingleOrDefault(w => w.MasterId == masterId && w.Date == date);
             if (workday == null) throw new Exception("Рабочий день не найден");
             return workday;
         }
@@ -38,7 +38,8 @@ namespace online_service_app_business_functions.Repositories
 
         public List<Workday> CreateByDefault(int masterId, List<DateOnly> dates)
         {
-            WorkdayByDefault byDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.MasterId == masterId);
+            WorkdayByDefault? byDefault = _db.WorkdayByDefaults.SingleOrDefault(w => w.MasterId == masterId);
+            if (byDefault == null) throw new Exception("Настройки дня по умолчанию отсутствуют");
             foreach (var date in dates)
             {
                 countId += 1;
@@ -46,13 +47,14 @@ namespace online_service_app_business_functions.Repositories
                 _db.Workdays.Add(newWorkday);
             }
             _db.SaveChanges();
-            return _db.Workdays.Where(w => w.MasterId == masterId).ToList();
+            List<Workday> workdays = _db.Workdays.Where(w => w.MasterId == masterId).ToList();
+            return workdays;
         }
 
         public Workday Update(int id, WorkdayModel model)
         {
-            Workday workday = _db.Workdays.SingleOrDefault(w => w.Id == id);
-           
+            Workday? workday = _db.Workdays.SingleOrDefault(w => w.Id == id);
+            if (workday == null) throw new Exception("Рабочий день отсутствует");
             //проверка на наличие записей
             DateTime date = new DateTime(workday.Date, TimeOnly.MinValue);
             List<Booking> bookings = _db.Bookings.Where(b => b.DateTime.Date == date).ToList();
@@ -68,8 +70,8 @@ namespace online_service_app_business_functions.Repositories
 
         public bool Delete(int id)
         {
-            Workday workday = _db.Workdays.SingleOrDefault(w => w.Id == id);
-
+            Workday? workday = _db.Workdays.SingleOrDefault(w => w.Id == id);
+            if (workday == null) throw new Exception("Рабочий день отсутствует");
             //проверка на наличие записей
             DateTime date = new DateTime(workday.Date, TimeOnly.MinValue);
             List<Booking> bookings = _db.Bookings.Where(b => b.DateTime.Date == date).ToList();

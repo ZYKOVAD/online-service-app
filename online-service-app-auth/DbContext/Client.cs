@@ -1,4 +1,4 @@
-﻿using online_service_app_auth.models;
+﻿using online_service_app_auth.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -6,7 +6,7 @@ namespace online_service_app_auth.db_layer;
 
 public partial class Client : IUser
 { 
-    private Client(int id, string name, string surname, string? patronymic, string? phone, string email, string password)
+    public Client(int id, string name, string surname, string? patronymic, string? phone, string email, string password)
     {
         Id = id;
         Name = name;
@@ -33,9 +33,4 @@ public partial class Client : IUser
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
-    // метод создания клиента
-    public static Client Create(int id, string name, string surname, string? patronymic, string? phone, string email, string password)
-    {
-        return new Client(id, name, surname, patronymic, phone, email, password);
-    }
 }
