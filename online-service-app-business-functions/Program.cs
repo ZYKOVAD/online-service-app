@@ -93,25 +93,27 @@ iQIDAQAB
     };
 });
 
-builder.Services.AddAuthorization(opts =>
-{
-    opts.AddPolicy("Default", policy => policy.RequireAuthenticatedUser());
-    opts.AddPolicy("OnlyForClients", policy =>
-    {
-        policy.RequireClaim("typeUser", "online_service_app_auth.db_layer.Client");
-    });
-    opts.AddPolicy("OnlyForMasters", policy =>
-    {
-        policy.RequireClaim("typeUser", "online_service_app_auth.db_layer.Master");
-    });
-    opts.AddPolicy("OnlyForOrganization", policy =>
-    {
-        policy.RequireClaim("typeUser", "online_service_app_auth.db_layer.Orgaanization");
-    });
-});
+//builder.Services.AddAuthorization(opts =>
+//{
+//    opts.AddPolicy("Default", policy => policy.RequireAuthenticatedUser());
+//    opts.AddPolicy("OnlyForClients", policy =>
+//    {
+//        policy.RequireClaim("typeUser", "online_service_app_auth.db_layer.Client");
+//    });
+//    opts.AddPolicy("OnlyForMasters", policy =>
+//    {
+//        policy.RequireClaim("typeUser", "online_service_app_auth.db_layer.Master");
+//    });
+//    opts.AddPolicy("OnlyForOrganization", policy =>
+//    {
+//        policy.RequireClaim("typeUser", "online_service_app_auth.db_layer.Orgaanization");
+//    });
+//});
 
 
 var app = builder.Build();
+
+builder.Configuration.AddJsonFile("SecretConfig.json");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

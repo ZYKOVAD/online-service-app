@@ -6,13 +6,16 @@ namespace online_service_app_business_functions.DbLayer;
 
 public partial class OnlineServiceDbContext : DbContext
 {
-    public OnlineServiceDbContext()
+    private readonly IConfiguration _configuration;
+    public OnlineServiceDbContext(IConfiguration configuration)
     {
+        _configuration = configuration;
     }
 
-    public OnlineServiceDbContext(DbContextOptions<OnlineServiceDbContext> options)
+    public OnlineServiceDbContext(DbContextOptions<OnlineServiceDbContext> options, IConfiguration configuration)
         : base(options)
     {
+        _configuration = configuration;
     }
 
     public virtual DbSet<Booking> Bookings { get; set; }
@@ -40,8 +43,7 @@ public partial class OnlineServiceDbContext : DbContext
     public virtual DbSet<WorkdayByDefault> WorkdayByDefaults { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=172.17.0.1;Port=5438;Database=online_service_db;Username=admin;Password=admin");
+        => optionsBuilder.UseNpgsql(_configuration["DbString"]);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

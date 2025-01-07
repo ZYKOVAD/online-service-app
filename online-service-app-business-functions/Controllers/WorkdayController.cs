@@ -63,7 +63,7 @@ namespace online_service_app_business_functions.Controllers
 
         //создание новых рабочих дней по настройкам по умолчанию, открытых для записи клиентов
         [HttpPost]
-        public IResult Create(int masterId, List<DateOnly> dates)
+        public IResult CreateByDefault(int masterId, List<DateOnly> dates)
         {
             try
             {

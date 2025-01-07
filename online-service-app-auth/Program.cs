@@ -38,6 +38,8 @@ builder.Services.AddScoped<OrganizationService>();
 
 var app = builder.Build();
 
+builder.Configuration.AddJsonFile("SecretConfig.json");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
