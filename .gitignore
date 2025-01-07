@@ -5,6 +5,7 @@
 
 PrivateKey.key
 SecretConfig.json
+/Keys/
 
 # User-specific files
 *.rsuser
