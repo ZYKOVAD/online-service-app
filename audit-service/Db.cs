@@ -8,7 +8,7 @@
     public class RabbitMqModelMesssage
     {
         public Guid Id { get; set; }
-        public string NameFunction { get; set; }
+        public string? NameFunction { get; set; }
         public long Milliseconds { get; set; }
     }
 }

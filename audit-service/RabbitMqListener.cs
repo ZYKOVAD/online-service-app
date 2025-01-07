@@ -27,7 +27,9 @@ namespace audit_service
             {
                 var content = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                RabbitMqModelMesssage message = JsonConvert.DeserializeObject<RabbitMqModelMesssage>(content);
+                RabbitMqModelMesssage? message = JsonConvert.DeserializeObject<RabbitMqModelMesssage>(content);
+                
+                if (message == null) throw new Exception("rabbirMq message is null");
 
                 Db.Data.Add(message);
 
